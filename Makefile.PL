@@ -86,7 +86,6 @@ sub postamble {
 pm_to_blib: README
 
 README: lib/RPC/PlServer.pm
-\tperldoc -t lib/RPC/PlServer.pm >README
 
 END_OF_POSTAMBLE
 }
