@@ -613,6 +613,10 @@ I did my best to avoid security problems, but it is more than likely,
 that I missed something. Security was a design goal, but not *the*
 design goal. (A well known problem ...)
 
+Due to implementation of PlRPC, it's hard to use internal authentication
+mechanisms properly to achieve secured remote calls. Therefore users are
+advised to use an external authentication mechanism like TLS or IPsec.
+
 I highly recommend the following design principles:
 
 =head2 Protection against "trusted" users
@@ -636,6 +640,14 @@ object handle is valid before coercing a method on it.
 =item Be restrictive
 
 Think twice, before you give a client access to a method.
+
+=item Use of Storable
+
+L<Storable> module used for serialization and deserialization underneath is
+inherently insecure. Deserialized data can contain objects which lead to
+loading foreign modules and executing possible attached destructors. Do not
+accept host-based unauthorized connections. The L<Storable> module is
+exercised before checking user password.
 
 =item perlsec
 
@@ -666,6 +678,9 @@ more: I recommend two phase encryption: The first phase is the
 login phase, where to use a host based key. As soon as the user
 has authorized, you should switch to a user based key. See the
 DBI::ProxyServer for an example.
+
+Please note PlRPC encryption does not protect from reply attacks. You should
+have implement it on the application or the cipher level.
 
 =back
 

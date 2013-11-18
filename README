@@ -204,6 +204,7 @@ EXAMPLE
         require RPC::PlServer;
         require MD5;
 
+
         package MD5_Server;  # Clients need to request application
                              # "MD5_Server"
 
@@ -245,6 +246,10 @@ SECURITY
     that I missed something. Security was a design goal, but not *the*
     design goal. (A well known problem ...)
 
+    Due to implementation of PlRPC, it's hard to use internal authentication
+    mechanisms properly to achieve secured remote calls. Therefore users are
+    advised to use an external authentication mechanism like TLS or IPsec.
+
     I highly recommend the following design principles:
 
   Protection against "trusted" users
@@ -262,6 +267,14 @@ SECURITY
 
     Be restrictive
         Think twice, before you give a client access to a method.
+
+    Use of Storable
+        Storable module used for serialization and deserialization
+        underneath is inherently insecure. Deserialized data can contain
+        objects which lead to loading foreign modules and executing possible
+        attached destructors. Do not accept host-based unauthorized
+        connections. The Storable module is exercised before checking user
+        password.
 
     perlsec
         And just in case I forgot it: Read the "perlsec" man page. :-)
@@ -282,6 +295,9 @@ SECURITY
         phase, where to use a host based key. As soon as the user has
         authorized, you should switch to a user based key. See the
         DBI::ProxyServer for an example.
+
+        Please note PlRPC encryption does not protect from reply attacks.
+        You should have implement it on the application or the cipher level.
 
 AUTHOR AND COPYRIGHT
     The PlRPC-modules are
