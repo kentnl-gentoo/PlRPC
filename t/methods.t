@@ -4,7 +4,7 @@
 require 5.004;
 use strict;
 
-require "t/lib.pl";
+require "./t/lib.pl";
 
 
 my $numTests = 11;

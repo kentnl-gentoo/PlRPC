@@ -10,7 +10,7 @@ if ($@ || $Crypt::DES::VERSION < 2.03) {
     exit 0;
 }
 
-require "t/lib.pl";
+require "./t/lib.pl";
 
 
 my $numTests = 18;
